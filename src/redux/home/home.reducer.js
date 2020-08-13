@@ -1,15 +1,15 @@
 import { HomeActionTypes } from "./home.types";
 
 const INITIAL_STATE = {
-  name: "Victor",
+  region: {},
 };
 
 const homeReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case HomeActionTypes.SET_NAME:
+    case HomeActionTypes.GET_CURRENT_LOCATION:
       return {
         ...state,
-        name: action.payload,
+        region: action.payload,
       };
     default:
       return state;

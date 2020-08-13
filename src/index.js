@@ -11,7 +11,7 @@ const Main = () => {
     <Provider store={store}>
       <Router>
         <Scene key="root">
-          <Scene key="home" component={Home} initial={true} />
+          <Scene key="home" component={Home} title="Home" initial={true} />
         </Scene>
       </Router>
     </Provider>
