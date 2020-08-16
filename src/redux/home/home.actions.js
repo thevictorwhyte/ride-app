@@ -158,6 +158,8 @@ export const getSelectedAddress = (placeID, desc) => {
 // BOOK CAR
 export const bookCar = () => {
   return (dispatch, store) => {
+    const nearByDrivers = store().home.nearByDrivers;
+    const nearByDriver = nearByDrivers[Math.floor(Math.random() * nearByDrivers.length)];
     const payload = {
       data: {
         userName: 'victor',
@@ -175,6 +177,12 @@ export const bookCar = () => {
         fare: store().home.fare,
         status: 'pending',
       },
+      nearByDriver: {
+        socketId: nearByDriver.socketId,
+        driverId: nearByDriver.driverId,
+        latitude: nearByDriver.coordinate.coordinates[1],
+        longitude: nearByDriver.coordinate.coordinates[0],
+      }
     };
 
     fetch('https://ride-server.herokuapp.com/api/bookings', {

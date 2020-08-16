@@ -16,15 +16,14 @@ class MapContainer extends React.Component {
   }
 
   render() {
-    const { region, resultTypes, carMarker, nearByDrivers } = this.props;
+    const { region, resultTypes, carMarker, nearByDrivers, selectedAddress } = this.props;
+
+    const { selectedPickup, selectedDropoff } = selectedAddress || {};
+
     return (
       <View style={styles.container}>
         <MapView provider={PROVIDER_GOOGLE} style={styles.map} region={region}>
           <MapView.Marker coordinate={region} pinColor="green" />
-          {/* <MapView.Marker
-            //={i}
-            coordinate={{ latitude: 6.499689614058997, longitude: 3.6140423404578956 }}
-            image={carMarker} /> */}
           {
             nearByDrivers.length > 0
               ? nearByDrivers.map((driver, i) =>
@@ -33,6 +32,18 @@ class MapContainer extends React.Component {
                   coordinate={{ latitude: driver.coordinate.coordinates[1], longitude: driver.coordinate.coordinates[0] }}
                   image={carMarker} />
               )
+              : null
+          }
+
+          {
+            selectedPickup ?
+              <MapView.Marker coordinate={{ latitude: selectedPickup.location.lat, longitude: selectedPickup.location.lng }} pinColor="green" />
+              : null
+          }
+
+          {
+            selectedDropoff ?
+              <MapView.Marker coordinate={{ latitude: selectedDropoff.location.lat, longitude: selectedDropoff.location.lng }} pinColor="blue" />
               : null
           }
         </MapView>
@@ -46,11 +57,11 @@ class MapContainer extends React.Component {
 const mapStateToProps = (state) => ({
   region: state.home.region,
   resultTypes: state.home.resultTypes,
-  nearByDrivers: state.home.nearByDrivers
+  nearByDrivers: state.home.nearByDrivers,
+  selectedAddress: state.home.selectedAddress
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  //getCurrentLocation: () => dispatch(getCurrentLocation()),
   getNearbyDrivers: () => dispatch(getNearbyDrivers()),
 });
 
