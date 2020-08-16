@@ -8,7 +8,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#0f083b"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -19,7 +19,7 @@
       "bundleIdentifier": "com.victorwhyte.ride",
       "buildNumber": "1.0.0",
       "config": {
-        "googleMapsApiKey": "AIzaSyAH-N5pUZoMjmmOk7ky-wpJnwvY7GGrQmE"
+        "googleMapsApiKey": "AIzaSyDoL3kHafiCAcJltUrU8Vq2v7Ek5u4BNkE"
       }
     },
     "web": {

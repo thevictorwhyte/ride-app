@@ -10,7 +10,7 @@ const Main = () => {
   return (
     <Provider store={store}>
       <Router>
-        <Scene key="root">
+        <Scene key="root" hideNavBar>
           <Scene key="home" component={Home} title="Home" initial={true} />
         </Scene>
       </Router>

@@ -3,22 +3,55 @@ import { View } from "native-base";
 import MapView, { PROVIDER_GOOGLE, PROVIDER_DEFAULT } from "react-native-maps";
 import { connect } from "react-redux";
 
-import { getCurrentLocation } from "../../redux/home/home.actions";
+import { getNearbyDrivers } from '../../redux/home/home.actions';
+
+import SearchBox from "../search-box/search-box.component";
+import SearchResults from "../search-results/search-results.component";
 
 import styles from "./map-container.styles";
 
-const MapContainer = ({ region }) => {
-  return (
-    <View style={styles.container}>
-      <MapView provider={PROVIDER_GOOGLE} style={styles.map} region={region}>
-        <MapView.Marker coordinate={region} pinColor="green" />
-      </MapView>
-    </View>
-  );
+class MapContainer extends React.Component {
+  componentDidMount() {
+    this.props.getNearbyDrivers()
+  }
+
+  render() {
+    const { region, resultTypes, carMarker, nearByDrivers } = this.props;
+    return (
+      <View style={styles.container}>
+        <MapView provider={PROVIDER_GOOGLE} style={styles.map} region={region}>
+          <MapView.Marker coordinate={region} pinColor="green" />
+          {/* <MapView.Marker
+            //={i}
+            coordinate={{ latitude: 6.499689614058997, longitude: 3.6140423404578956 }}
+            image={carMarker} /> */}
+          {
+            nearByDrivers.length > 0
+              ? nearByDrivers.map((driver, i) =>
+                <MapView.Marker
+                  key={i}
+                  coordinate={{ latitude: driver.coordinate.coordinates[1], longitude: driver.coordinate.coordinates[0] }}
+                  image={carMarker} />
+              )
+              : null
+          }
+        </MapView>
+        <SearchBox />
+        {resultTypes.pickUp || resultTypes.dropOff ? <SearchResults /> : null}
+      </View>
+    );
+  }
 };
 
 const mapStateToProps = (state) => ({
   region: state.home.region,
+  resultTypes: state.home.resultTypes,
+  nearByDrivers: state.home.nearByDrivers
 });
 
-export default connect(mapStateToProps, null)(MapContainer);
+const mapDispatchToProps = (dispatch) => ({
+  //getCurrentLocation: () => dispatch(getCurrentLocation()),
+  getNearbyDrivers: () => dispatch(getNearbyDrivers()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MapContainer);
