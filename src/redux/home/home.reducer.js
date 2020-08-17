@@ -108,6 +108,12 @@ const homeReducer = (state = INITIAL_STATE, action) => {
         ...state,
         nearByDrivers: action.payload,
       };
+
+    case HomeActionTypes.BOOKING_CONFIRMED:
+      return {
+        ...state,
+        booking: action.payload
+      }
     default:
       return state;
   }

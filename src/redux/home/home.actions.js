@@ -1,8 +1,8 @@
 import { HomeActionTypes } from './home.types';
 import store from '../store';
 import calculateFare from '../../../src/utilis/fareCalculator';
+import API_KEY from '../../utilis/api';
 
-const API_KEY = 'AIzaSyAzsibFMiD-aDpR32rd7WgJxl7jXYg-Gy8';
 // get users current location
 export const getCurrentLocation = () => {
   return async (dispatch) => {
@@ -88,7 +88,7 @@ export const getSelectedAddress = (placeID, desc) => {
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(desc);
+        console.log(`placeid is: ${placeID} and placeholder is ${desc}`);
         return dispatch({
           type: HomeActionTypes.GET_SELECTED_ADDRESS,
           payload: {
@@ -123,33 +123,57 @@ export const getSelectedAddress = (placeID, desc) => {
                 payload: data,
               });
             })
+            .then(() => {
+              if (
+                store().home.selectedAddress.selectedPickup &&
+                store().home.selectedAddress.selectedDropoff
+              ) {
+                let time = store().home.distanceMatrix.rows[0].elements[0].duration
+                  .value;
+                let distance = store().home.distanceMatrix.rows[0].elements[0]
+                  .distance.value;
+
+                const fare = calculateFare(
+                  dummyNumbers.baseFare,
+                  dummyNumbers.timeRate,
+                  time,
+                  dummyNumbers.distanceRate,
+                  distance,
+                  dummyNumbers.surge
+                );
+                return dispatch({
+                  type: HomeActionTypes.GET_FARE,
+                  payload: fare,
+                });
+              }
+            })
             .catch((err) => console.log(err.message));
         }
         // CALCULATE FARE
-        setTimeout(function () {
-          if (
-            store().home.selectedAddress.selectedPickup &&
-            store().home.selectedAddress.selectedDropoff
-          ) {
-            let time = store().home.distanceMatrix.rows[0].elements[0].duration
-              .value;
-            let distance = store().home.distanceMatrix.rows[0].elements[0]
-              .distance.value;
+        // setTimeout(function () {
+        //   if (
+        //     store().home.selectedAddress.selectedPickup &&
+        //     store().home.selectedAddress.selectedDropoff
+        //   ) {
+        //     let time = store().home.distanceMatrix.rows[0].elements[0].duration
+        //       .value;
+        //     let distance = store().home.distanceMatrix.rows[0].elements[0]
+        //       .distance.value;
 
-            const fare = calculateFare(
-              dummyNumbers.baseFare,
-              dummyNumbers.timeRate,
-              time,
-              dummyNumbers.distanceRate,
-              distance,
-              dummyNumbers.surge
-            );
-            return dispatch({
-              type: HomeActionTypes.GET_FARE,
-              payload: fare,
-            });
-          }
-        }, 1000);
+        //     const fare = calculateFare(
+        //       dummyNumbers.baseFare,
+        //       dummyNumbers.timeRate,
+        //       time,
+        //       dummyNumbers.distanceRate,
+        //       distance,
+        //       dummyNumbers.surge
+        //     );
+        //     return dispatch({
+        //       type: HomeActionTypes.GET_FARE,
+        //       payload: fare,
+        //     });
+        //   }
+        // }, 1000);
       })
       .catch((err) => console.log(err.message));
   };

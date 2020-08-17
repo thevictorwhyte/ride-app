@@ -15,7 +15,10 @@ const HeaderContainer = ({ logo }) => {
       </Left>
 
       <Body>
-        <Image resizeMode="contain" style={styles.logo} source={logo} />
+        {
+          logo ? <Image resizeMode="contain" style={styles.logo} source={logo} /> : <Text style={styles.headerText}>Driver on the way</Text>
+
+        }
       </Body>
 
       <Right>

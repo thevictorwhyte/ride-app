@@ -30,7 +30,7 @@ const FooterContainer = ({ logo }) => {
     },
   ];
   return (
-    <Footer style={{ boxSizing: "border-box", height: "auto" }}>
+    <Footer style={styles.footerMain} >
       <FooterTab style={styles.footerContainer} iosBarStyle="light-content">
         {tabs.map((tab, i) => {
           return (
