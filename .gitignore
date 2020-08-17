@@ -9,6 +9,7 @@ npm-debug.*
 *.orig.*
 web-build/
 src/utilis/api.js
+server/
 
 # macOS
 .DS_Store
