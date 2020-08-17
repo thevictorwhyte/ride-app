@@ -75,10 +75,10 @@ export const getAddressPredictions = () => {
 };
 
 const dummyNumbers = {
-  baseFare: 0.4,
-  timeRate: 0.14,
+  baseFare: 500,
+  timeRate: 0.4,
   distanceRate: 0.97,
-  surge: 1,
+  surge: 1.5,
 };
 
 export const getSelectedAddress = (placeID, desc) => {
